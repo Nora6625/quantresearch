@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Apr  4 07:40:07 2020
+
+@author: 15012
+"""
+import matplotlib.pyplot as plt
+
+from back_test import *
+
+# 作收益折线图
+
+x = trade_date
+y = funds
+
+df = pd.DataFrame({'Month': trade_date, 'Values': funds})
+
+index_array = np.array(df.index)
+values_array = np.array(df['Values'])
+
+df['Month'] = pd.to_datetime(df['Month'])
+
+df.set_index('Month', inplace=True)
+
+plt.plot(index_array, values_array, linestyle='-')
+
+plt.xticks(rotation=45)
+
+plt.title('start funds : 10000')
+plt.ylabel('rate of return')
+plt.show()
+
+# 计算波动率 因为是十年内每个月的收益率，所以是12
+monthly_rtn_array = np.array(monthly_rtn)
+Volatility = np.std(monthly_rtn_array) * np.sqrt(12)
+print("volatility:", Volatility)
+
+# 简化模型，假设无风险利率 计算夏普比率
+risk_free_rate = 0.017
+
+sharpe_ratio = (annual_rtn - risk_free_rate) / Volatility
+print("sharpe ratio:", sharpe_ratio)
+
+
+# 最大回撤
+def max_drawdown(returns):
+    max_dd = 0
+    peak = returns[0]
+    for r in returns:
+        if r > peak:
+            peak = r
+        dd = (peak - r) / peak
+        if dd > max_dd:
+            max_dd = dd
+    return max_dd
+
+
+dd = max_drawdown(monthly_rtn_array)
+print("max drawdown: ", dd)
+
+plt.show()
