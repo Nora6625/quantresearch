@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Apr  4 07:40:07 2020
 
-@author: 15012
-"""
+
 import matplotlib.pyplot as plt
 
 from back_test import *
@@ -15,26 +12,19 @@ y = funds
 
 df = pd.DataFrame({'Month': trade_date, 'Values': funds})
 
-index_array = np.array(df.index)
-values_array = np.array(df['Values'])
-
 df['Month'] = pd.to_datetime(df['Month'])
-
 df.set_index('Month', inplace=True)
 
-plt.plot(index_array, values_array, linestyle='-')
-
+plt.plot(df.index, df['Values'], linestyle='-')
 plt.xticks(rotation=45)
 
 plt.title('start funds : 10000')
 plt.ylabel('rate of return')
-plt.show()
+
 
 # 计算波动率 因为是十年内每个月的收益率，所以是12
-monthly_rtn_array = np.array(monthly_rtn)
-Volatility = np.std(monthly_rtn_array) * np.sqrt(12)
+Volatility = np.std(monthly_rtn) * np.sqrt(12)
 print("volatility:", Volatility)
-
 # 简化模型，假设无风险利率 计算夏普比率
 risk_free_rate = 0.017
 
@@ -55,7 +45,8 @@ def max_drawdown(returns):
     return max_dd
 
 
-dd = max_drawdown(monthly_rtn_array)
+dd = max_drawdown(monthly_rtn)
 print("max drawdown: ", dd)
 
 plt.show()
+
