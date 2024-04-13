@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Apr  4 07:39:54 2020
-
 @author: 15012
 """
+
+import pandas as pd
+import numpy as np
 from utils import *
 
-
-total_df = pd.read_csv(dir_data_result + "factor_scores.csv")
+total_df = pd.read_csv(dir_result + "factor_scores.csv")
 # 换手交易的时间
 trade_date = list(set(total_df['month']))
 trade_date.sort()
