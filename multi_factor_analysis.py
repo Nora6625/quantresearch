@@ -9,12 +9,14 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 from utils import *
+import pandas as pd
+import numpy as np
 
-dir_data_result = dir_main + "result/"
+dir_result = dir_main + "result/"
 
 total_df = pd.read_csv(dir_data_final + "total_df_monthly.csv")
 
-sgl_factors = pd.read_csv(dir_data_result + "sgl_factor_result.csv")
+sgl_factors = pd.read_csv(dir_result + "sgl_factor_result.csv")
 
 # 随机种子
 random_seed = 42
@@ -75,5 +77,6 @@ scores = X.dot(weight.T)
 total_df['score'] = scores
 
 print(total_df["score"])
+
 # 得分是越低越好
-total_df.to_csv(dir_data_result + "factor_scores.csv", index=False)
+total_df.to_csv(dir_result + "factor_scores.csv", index=False)
