@@ -7,7 +7,7 @@ Created on Sat Apr  4 07:37:55 2020
 
 
 
-import numpy as np 
+import numpy as np
 import pandas as pd
 import os
 from utils import *
@@ -24,6 +24,7 @@ dir_data_output = dir_data_final
 
 
 month_list_stock_df = pd.read_csv(dir_data_input + "MonthListStock.csv")
+
 del month_list_stock_df["Unnamed: 0"]
 month_list_stock_df.head()
 month_list_stock_dict = {col: set(month_list_stock_df[col]) for col in month_list_stock_df.columns}
@@ -63,7 +64,7 @@ for year in np.arange(2006,2016):
         cur_data = cur_data[cur_data.bool_in_HS]
         print(cur_data.shape)
         del cur_data["bool_in_HS"]
-        total_data = total_data._append(cur_data)
+        total_data = total_data.append(cur_data)
 
 print(total_data.shape)
 total_data.head()
@@ -137,7 +138,7 @@ total_factor_df = pd.DataFrame()
 file_name = file_names[0]
 
 factor_name = file_name[:-5]
-cur_file = pd.read_excel(dir_data_input + file_name)
+cur_file = pd.read_excel(dir_data_input + file_name, engine='openpyxl')
 cur_file.head()
 del cur_file["name"]
 cur_file.index = cur_file.id
@@ -155,7 +156,7 @@ cur_factor_df.head()
 file_name = factor_name + "_delist.xlsx"
 
 if file_name in file_names_orig:
-    cur_file = pd.read_excel(dir_data_input + file_name)
+    cur_file = pd.read_excel(dir_data_input + file_name, engine='openpyxl')
     cur_file.head()
     del cur_file["name"]
     cur_file.index = cur_file.id
@@ -169,7 +170,7 @@ if file_name in file_names_orig:
     cur_factor_delist_df = cur_factor_delist_df.rename(columns = {"level_1":"quarter",0:factor_name})
     cur_factor_delist_df["quarter"] = cur_factor_delist_df.quarter.apply(lambda x:x[-6:])
     cur_factor_delist_df.head()
-    cur_factor_df = cur_factor_df._append(cur_factor_delist_df)
+    cur_factor_df = cur_factor_df.append(cur_factor_delist_df)
 
 if len(total_factor_df) == 0:
     total_factor_df = cur_factor_df
@@ -180,7 +181,7 @@ else:
 file_name = file_names[1]
 
 factor_name = file_name[:-5]
-cur_file = pd.read_excel(dir_data_input + file_name)
+cur_file = pd.read_excel(dir_data_input + file_name, engine='openpyxl')
 cur_file.head()
 del cur_file["name"]
 cur_file.index = cur_file.id
@@ -198,7 +199,7 @@ cur_factor_df.head()
 file_name = factor_name + "_delist.xlsx"
 
 if file_name in file_names_orig:
-    cur_file = pd.read_excel(dir_data_input + file_name)
+    cur_file = pd.read_excel(dir_data_input + file_name, engine='openpyxl')
     cur_file.head()
     del cur_file["name"]
     cur_file.index = cur_file.id
@@ -212,7 +213,7 @@ if file_name in file_names_orig:
     cur_factor_delist_df = cur_factor_delist_df.rename(columns = {"level_1":"quarter",0:factor_name})
     cur_factor_delist_df["quarter"] = cur_factor_delist_df.quarter.apply(lambda x:x[-6:])
     cur_factor_delist_df.head()
-    cur_factor_df = cur_factor_df._append(cur_factor_delist_df)
+    cur_factor_df = cur_factor_df.append(cur_factor_delist_df)
 
 if len(total_factor_df) == 0:
     total_factor_df = cur_factor_df
@@ -230,7 +231,7 @@ for file_name in file_names:
     factor_name = file_name[:-5]
     print("*"*30)
     print(factor_name)
-    cur_file = pd.read_excel(dir_data_input + file_name)
+    cur_file = pd.read_excel(dir_data_input + file_name, engine='openpyxl')
     del cur_file["name"]
     cur_file.index = cur_file.id
     del cur_file["id"]
@@ -244,7 +245,7 @@ for file_name in file_names:
     file_name = factor_name + "_delist.xlsx"
 
     if file_name in file_names_orig:
-        cur_file = pd.read_excel(dir_data_input + file_name)
+        cur_file = pd.read_excel(dir_data_input + file_name, engine='openpyxl')
         cur_file.head()
         del cur_file["name"]
         cur_file.index = cur_file.id
@@ -256,7 +257,7 @@ for file_name in file_names:
         cur_factor_delist_df.head()
         cur_factor_delist_df = cur_factor_delist_df.rename(columns = {"level_1":"quarter",0:factor_name})
         cur_factor_delist_df["quarter"] = cur_factor_delist_df.quarter.apply(lambda x:x[-6:])
-        cur_factor_df = cur_factor_df._append(cur_factor_delist_df)
+        cur_factor_df = cur_factor_df.append(cur_factor_delist_df)
 
     if len(total_factor_df) == 0:
         total_factor_df = cur_factor_df
@@ -358,7 +359,7 @@ total_df.to_csv(dir_data_output + "total_df_monthly.csv", index=False)
 """
 
 total_df = pd.read_csv(dir_data_output + 'total_df_monthly.csv')
-industry_df = pd.read_excel(dir_data_raw_market + 'industry.xlsx')
+industry_df = pd.read_excel(dir_data_raw_market + 'industry.xlsx', engine='openpyxl')
 industry_df.index = industry_df.id
 del industry_df['name']
 del industry_df['id']
